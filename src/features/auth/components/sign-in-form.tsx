@@ -18,7 +18,7 @@ export function SignInForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
+          <CardTitle className="text-xl">Welcome </CardTitle>
           <CardDescription>
             Login with your Apple or Google account
           </CardDescription>
@@ -71,10 +71,15 @@ export function SignInForm({
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="********"
+                    required
+                  />
                 </div>
                 <Button type="submit" className="w-full">
-                  Login
+                  Sign in
                 </Button>
               </div>
               <div className="text-center text-sm">
