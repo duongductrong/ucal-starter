@@ -4,6 +4,6 @@ export interface WebConfig {
 }
 
 export const webConfig: WebConfig = {
-  name: "Ucal Inc.",
-  description: "Ucal Inc. is a company that makes things.",
+  name: "Next Starter Inc.",
+  description: "Next Starter Inc. is a company that makes things.",
 }
