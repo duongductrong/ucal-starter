@@ -9,9 +9,12 @@ const LazyInput = dynamic(() =>
   }))
 )
 
+const LazyMultiSelect = dynamic(() => import("@/components/ui/multiselect"))
+
 const Field = createField(
   {
     text: (props: InputProps) => <LazyInput {...props} type="text" />,
+    multiselect: LazyMultiSelect,
   },
   {
     suspenseFallback: (
