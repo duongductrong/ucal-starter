@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ThemeProvider } from "@/components/ui/theme-provider"
+import AuthSessionProvider from "@/components/usecases/auth-session-provider"
 import { routing } from "@/i18n/routing"
 import { cn } from "@/utils/tw"
 import type { Metadata } from "next"
+import { getServerSession } from "next-auth"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages } from "next-intl/server"
 import { Geist, Inter } from "next/font/google"
 import { notFound } from "next/navigation"
+
 import "../globals.css"
 
 const inter = Inter({
@@ -38,7 +41,10 @@ export default async function RootLayout({ children, params }: LayoutProps) {
     return notFound()
   }
 
-  const messages = await getMessages({ locale: locale })
+  const [messages, session] = await Promise.all([
+    getMessages({ locale: locale }),
+    getServerSession(),
+  ])
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -47,7 +53,9 @@ export default async function RootLayout({ children, params }: LayoutProps) {
       >
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider attribute="class" forcedTheme="light">
-            {children}
+            <AuthSessionProvider session={session}>
+              {children}
+            </AuthSessionProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
