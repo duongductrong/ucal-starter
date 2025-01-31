@@ -1,8 +1,6 @@
 "use client"
 
-import {
-  AuthRequired
-} from "@/features/auth/components/auth-protector"
+import { AuthSignedIn } from "@/features/auth/components/auth"
 import { ReactNode } from "react"
 
 export interface AdminLayoutProps {
@@ -10,7 +8,7 @@ export interface AdminLayoutProps {
 }
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
-  return <AuthRequired>{children}</AuthRequired>
+  return <AuthSignedIn>{children}</AuthSignedIn>
 }
 
 export default AdminLayout

@@ -8,7 +8,7 @@ import { getMessages } from "next-intl/server"
 import { Geist, Inter } from "next/font/google"
 import { notFound } from "next/navigation"
 
-import SessionProvider from "@/components/uses/auth/session-provider"
+import SessionProvider from "@/features/auth/components/session-provider"
 import { auth } from "auth"
 import "../globals.css"
 

@@ -1,12 +1,8 @@
 import { redirect } from "@/i18n/routing"
 import { useSession } from "next-auth/react"
-import { ReactNode } from "react"
+import { PropsWithChildren } from "react"
 
-export interface AuthProtectorProps {
-  children: ReactNode
-}
-
-export const AuthProtector = ({ children }: AuthProtectorProps) => {
+export const AuthPossible = ({ children }: PropsWithChildren) => {
   const session = useSession()
 
   if (session.status === "authenticated") {
@@ -16,7 +12,7 @@ export const AuthProtector = ({ children }: AuthProtectorProps) => {
   return children
 }
 
-export const AuthRequired = ({ children }: AuthProtectorProps) => {
+export const AuthSignedIn = ({ children }: PropsWithChildren) => {
   const session = useSession()
 
   if (session.status === "authenticated") {

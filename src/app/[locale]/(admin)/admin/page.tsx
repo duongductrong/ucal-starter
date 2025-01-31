@@ -1,4 +1,5 @@
-import { AppSidebar } from "@/components/uses/app-sidebar"
+"use client"
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,6 +14,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/uses/app-sidebar"
 
 export default function Page() {
   return (

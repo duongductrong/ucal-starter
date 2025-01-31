@@ -2,6 +2,7 @@
 
 import { Session } from "next-auth"
 import { SessionProvider as SessionProviderPrimitive } from "next-auth/react"
+import { useMemo } from "react"
 
 const SessionProvider = ({
   children,
@@ -10,8 +11,16 @@ const SessionProvider = ({
   session: Session | null
   children: React.ReactNode
 }) => {
+  const sessionId = useMemo(
+    () => session?.user?.id ?? new Date().getTime(),
+    [session]
+  )
   return (
-    <SessionProviderPrimitive session={session}>
+    <SessionProviderPrimitive
+      key={sessionId}
+      session={session}
+      baseUrl="/api/auth"
+    >
       {children}
     </SessionProviderPrimitive>
   )

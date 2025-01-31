@@ -26,7 +26,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { signOutWithAccount } from "@/features/auth/actions/sign-in-with-oauth"
-import { useRouter } from "@/i18n/routing"
+import {} from "next-auth/react"
 
 export function NavUser({
   user,
@@ -37,12 +37,10 @@ export function NavUser({
     avatar: string
   }
 }) {
-  const router = useRouter()
   const { isMobile } = useSidebar()
 
-  const handleSignOut = async () => {
-    await signOutWithAccount()
-    router.refresh()
+  const handleSignOut = () => {
+    signOutWithAccount()
   }
 
   return (
