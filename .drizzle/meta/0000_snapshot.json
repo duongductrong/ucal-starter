@@ -1,5 +1,5 @@
 {
-  "id": "219015ce-a5f9-4a59-9502-a65a53bc6124",
+  "id": "76cb4457-4fe6-4795-81af-6a4d06cb1ee6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -62,6 +62,18 @@
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
+        },
+        "avatar": {
+          "name": "avatar",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "emailVerified": {
+          "name": "emailVerified",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},

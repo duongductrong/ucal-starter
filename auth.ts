@@ -38,7 +38,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (pathname === "/middleware-example") return !!auth
       return true
     },
-    jwt({ token, trigger, session, account }) {
+    async jwt({ token, trigger, session, account }) {
       if (trigger === "update") token.name = session.user.name
 
       const result = token
@@ -46,8 +46,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (account?.provider === "keycloak") {
         result.accessToken = account.access_token
       }
-
-      // TODO: Add authentication flow here
 
       return result
     },
