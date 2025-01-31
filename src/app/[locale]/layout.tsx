@@ -23,8 +23,8 @@ const geist = Geist({
 })
 
 export const metadata: Metadata = {
-  title: "Ucal Starter",
-  description: "Ucal Starter",
+  title: "Next Starter",
+  description: "Next Starter",
 }
 
 export interface LayoutProps {
