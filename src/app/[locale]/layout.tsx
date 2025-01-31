@@ -52,7 +52,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
         className={cn(inter.variable, geist.variable, "font-sans antialiased")}
       >
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <ThemeProvider attribute="class" forcedTheme="light">
+          <ThemeProvider attribute="class" forcedTheme="dark">
             <AuthSessionProvider session={session}>
               {children}
             </AuthSessionProvider>
