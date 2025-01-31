@@ -23,7 +23,7 @@ const Field = createField(
     classNames: {
       label: labelVariants({ className: "mb-2 block" }),
       description: "text-sm text-muted-foreground",
-      message: "text-sm text-destructive",
+      message: "text-xs text-destructive mt-1",
     },
   }
 )

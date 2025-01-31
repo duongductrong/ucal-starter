@@ -1,3 +1,8 @@
+import { createUser } from "@/db/queries/user/create-user"
+import {
+  isUserAlreadyConnectedAnotherProvider,
+  isUserAlreadyExists,
+} from "@/db/queries/user/error"
 import { UnstorageAdapter } from "@auth/unstorage-adapter"
 import NextAuth from "next-auth"
 import "next-auth/jwt"
@@ -6,6 +11,11 @@ import Github from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import { createStorage } from "unstorage"
 import memoryDriver from "unstorage/drivers/memory"
+
+export interface AuthCredentials {
+  email: string
+  password: string
+}
 
 const storage = createStorage({
   driver: memoryDriver(),
@@ -27,19 +37,48 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      authorize: async (credentials: any) => {
-        console.log("credentials", credentials)
-        return { id: "1", name: "John Doe", ...credentials }
+      authorize: async (_credentials: unknown) => {
+        const credentials = _credentials as AuthCredentials
+
+        return {
+          email: credentials.email,
+          password: credentials.password,
+          image: null,
+          provider: "credentials",
+          providerId: null,
+        }
       },
     }),
   ],
   callbacks: {
-    authorized({ request, auth }) {
-      const { pathname } = request.nextUrl
-      if (pathname === "/middleware-example") return !!auth
+    signIn: async ({ user, account }) => {
+      try {
+        await createUser({
+          email: user?.email as string,
+          password: null,
+          name: user.name,
+          provider: account?.provider as string,
+          providerId: account?.providerAccountId as string,
+          avatar: user?.image as string,
+          emailVerified: new Date(),
+        })
+      } catch (error) {
+        console.error("[auth]", error)
+
+        if (isUserAlreadyExists(error)) return true
+        if (isUserAlreadyConnectedAnotherProvider(error))
+          return "/sign-in?message=already-connected-with-another-provider"
+
+        return false
+      }
+
+      return false
+    },
+
+    authorized() {
       return true
     },
+
     async jwt({ token, trigger, session, account }) {
       if (trigger === "update") token.name = session.user.name
 
@@ -51,6 +90,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return result
     },
+
     async session({ session, token }) {
       if (token?.accessToken) session.accessToken = token.accessToken
 

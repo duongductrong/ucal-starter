@@ -7,11 +7,8 @@ export const signInWithOAuth = async (provider: BuiltInProviderType) => {
   await signIn(provider)
 }
 
-export const signInWithCredentials = async (
-  email: string,
-  password: string
-) => {
-  await signIn("credentials", { email, password })
+export const signInWithCredentials = async (email: string) => {
+  await signIn("credentials", { email })
 }
 
 export const signOutWithAccount = async () => {
