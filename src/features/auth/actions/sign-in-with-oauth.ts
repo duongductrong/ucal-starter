@@ -14,6 +14,6 @@ export const signInWithCredentials = async (
   await signIn("credentials", { email, password })
 }
 
-export const signOutWithAll = async () => {
+export const signOutWithAccount = async () => {
   await signOut()
 }

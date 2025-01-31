@@ -25,7 +25,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { signOutWithAll } from "@/features/auth/actions/sign-in-with-oauth"
+import { signOutWithAccount } from "@/features/auth/actions/sign-in-with-oauth"
+import { useRouter } from "@/i18n/routing"
 
 export function NavUser({
   user,
@@ -36,7 +37,13 @@ export function NavUser({
     avatar: string
   }
 }) {
+  const router = useRouter()
   const { isMobile } = useSidebar()
+
+  const handleSignOut = async () => {
+    await signOutWithAccount()
+    router.refresh()
+  }
 
   return (
     <SidebarMenu>
@@ -99,7 +106,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOutWithAll()}>
+            <DropdownMenuItem onClick={handleSignOut}>
               <LogOut />
               Log out
             </DropdownMenuItem>
