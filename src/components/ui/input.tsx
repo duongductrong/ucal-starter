@@ -10,7 +10,7 @@ const Input = ({ className, type, ref, ...props }: InputProps) => {
       type={type}
       className={cn(
         "flex h-9 w-full rounded-md",
-        "border border-input bg-transparent px-3 py-1 text-base shadow-sm",
+        "border border-input bg-transparent px-3 py-1 text-base",
         "transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
         "placeholder:text-muted-foreground",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20 focus-visible:ring-offset-0",
