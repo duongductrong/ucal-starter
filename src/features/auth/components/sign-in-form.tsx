@@ -12,7 +12,6 @@ import { Label } from "@/components/ui/label"
 import Field from "@/components/usecases/form"
 import { cn } from "@/utils/tw"
 import { BuiltInProviderType } from "next-auth/providers/index"
-import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { FormProvider, useForm } from "react-hook-form"
 import {
@@ -29,7 +28,6 @@ export function SignInForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const { data: session } = useSession()
   const methods = useForm<{
     email: string
     password: string
@@ -50,7 +48,6 @@ export function SignInForm({
 
   return (
     <FormProvider {...methods}>
-      {JSON.stringify(session)}
       <div className={cn("flex flex-col gap-6", className)} {...props}>
         <Card>
           <CardHeader className="text-center">

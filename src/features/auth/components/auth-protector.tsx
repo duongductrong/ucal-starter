@@ -6,7 +6,7 @@ export interface AuthProtectorProps {
   children: ReactNode
 }
 
-const AuthProtector = ({ children }: AuthProtectorProps) => {
+export const AuthProtector = ({ children }: AuthProtectorProps) => {
   const session = useSession()
 
   if (session.status === "authenticated") {
@@ -16,4 +16,12 @@ const AuthProtector = ({ children }: AuthProtectorProps) => {
   return children
 }
 
-export default AuthProtector
+export const AuthRequired = ({ children }: AuthProtectorProps) => {
+  const session = useSession()
+
+  if (session.status === "authenticated") {
+    return children
+  }
+
+  return redirect({ href: "/sign-in", locale: "en" })
+}

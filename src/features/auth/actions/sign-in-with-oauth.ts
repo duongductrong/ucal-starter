@@ -1,6 +1,6 @@
 "use server"
 
-import { signIn } from "auth"
+import { signIn, signOut } from "auth"
 import { BuiltInProviderType } from "next-auth/providers"
 
 export const signInWithOAuth = async (provider: BuiltInProviderType) => {
@@ -12,4 +12,8 @@ export const signInWithCredentials = async (
   password: string
 ) => {
   await signIn("credentials", { email, password })
+}
+
+export const signOutWithAll = async () => {
+  await signOut()
 }
