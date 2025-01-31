@@ -40,10 +40,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     jwt({ token, trigger, session, account }) {
       if (trigger === "update") token.name = session.user.name
+
+      const result = token
+
       if (account?.provider === "keycloak") {
-        return { ...token, accessToken: account.access_token }
+        result.accessToken = account.access_token
       }
-      return token
+
+      // TODO: Add authentication flow here
+
+      return result
     },
     async session({ session, token }) {
       if (token?.accessToken) session.accessToken = token.accessToken
