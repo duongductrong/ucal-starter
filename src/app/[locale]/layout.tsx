@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ThemeProvider } from "@/components/ui/theme-provider"
-import AuthSessionProvider from "@/components/usecases/auth-session-provider"
 import { routing } from "@/i18n/routing"
 import { cn } from "@/utils/tw"
 import type { Metadata } from "next"
@@ -9,6 +8,7 @@ import { getMessages } from "next-intl/server"
 import { Geist, Inter } from "next/font/google"
 import { notFound } from "next/navigation"
 
+import SessionProvider from "@/components/uses/auth/session-provider"
 import { auth } from "auth"
 import "../globals.css"
 
@@ -53,9 +53,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
       >
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider attribute="class" forcedTheme="light">
-            <AuthSessionProvider session={session}>
-              {children}
-            </AuthSessionProvider>
+            <SessionProvider session={session}>{children}</SessionProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

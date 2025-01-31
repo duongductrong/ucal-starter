@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import Field from "@/components/usecases/form"
+import Field from "@/components/uses/form"
 import { cn } from "@/utils/tw"
 import { BuiltInProviderType } from "next-auth/providers/index"
 import Link from "next/link"
