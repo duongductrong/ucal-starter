@@ -4,12 +4,12 @@ import AuthSessionProvider from "@/components/usecases/auth-session-provider"
 import { routing } from "@/i18n/routing"
 import { cn } from "@/utils/tw"
 import type { Metadata } from "next"
-import { getServerSession } from "next-auth"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages } from "next-intl/server"
 import { Geist, Inter } from "next/font/google"
 import { notFound } from "next/navigation"
 
+import { auth } from "auth"
 import "../globals.css"
 
 const inter = Inter({
@@ -43,7 +43,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
 
   const [messages, session] = await Promise.all([
     getMessages({ locale: locale }),
-    getServerSession(),
+    auth(),
   ])
 
   return (

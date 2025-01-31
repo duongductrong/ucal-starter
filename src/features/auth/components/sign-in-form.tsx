@@ -11,12 +11,14 @@ import {
 import { Label } from "@/components/ui/label"
 import Field from "@/components/usecases/form"
 import { cn } from "@/utils/tw"
-import {
-  BuiltInProviderType
-} from "next-auth/providers/index"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { BuiltInProviderType } from "next-auth/providers/index"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { FormProvider, useForm } from "react-hook-form"
+import {
+  signInWithCredentials,
+  signInWithOAuth,
+} from "../actions/sign-in-with-oauth"
 
 export interface Credentials {
   email: string
@@ -39,21 +41,17 @@ export function SignInForm({
   })
 
   const handleSignInWithProvider = (provider: BuiltInProviderType) => () => {
-    signIn(provider)
+    signInWithOAuth(provider)
   }
 
   const handleSignInWithCredentials = methods.handleSubmit((data) => {
-    console.log(data)
+    signInWithCredentials(data.email, data.password)
   })
 
   return (
     <FormProvider {...methods}>
-      <div
-        className={cn("flex flex-col gap-6", className)}
-        onClick={() => signOut({})}
-        {...props}
-      >
-        {JSON.stringify(session)}
+      {JSON.stringify(session)}
+      <div className={cn("flex flex-col gap-6", className)} {...props}>
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Welcome </CardTitle>
@@ -143,9 +141,12 @@ export function SignInForm({
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
-                  <a href="#" className="underline underline-offset-4">
+                  <Link
+                    href="/sign-up"
+                    className="underline underline-offset-4"
+                  >
                     Sign up
-                  </a>
+                  </Link>
                 </div>
               </div>
             </form>

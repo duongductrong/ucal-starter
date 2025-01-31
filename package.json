@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/unstorage-adapter": "^2.7.4",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-alert-dialog": "^1.1.5",
@@ -48,7 +49,7 @@
     "input-otp": "^1.4.2",
     "lucide-react": "^0.474.0",
     "next": "15.1.6",
-    "next-auth": "^4.24.11",
+    "next-auth": "beta",
     "next-intl": "^3.26.3",
     "next-themes": "^0.4.4",
     "react": "^19.0.0",
@@ -62,6 +63,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwind-variants": "^0.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "unstorage": "^1.14.4",
     "vaul": "^1.1.2",
     "zod": "^3.24.1",
     "zustand": "^5.0.3"

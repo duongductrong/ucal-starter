@@ -1,71 +1,67 @@
-import { NextAuthOptions } from "next-auth"
+import { UnstorageAdapter } from "@auth/unstorage-adapter"
+import NextAuth from "next-auth"
 import "next-auth/jwt"
 import CredentialsProvider from "next-auth/providers/credentials"
-import GoogleProvider from "next-auth/providers/google"
+import Google from "next-auth/providers/google"
+import { createStorage } from "unstorage"
+import memoryDriver from "unstorage/drivers/memory"
 
-const providers = [
-  GoogleProvider({
-    clientId: process.env.GOOGLE_CLIENT_ID!,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-  }),
-  CredentialsProvider({
-    type: "credentials",
-    name: "credentials",
-    credentials: {},
-    authorize: async () => {
-      return { id: "1", name: "John Doe", email: "john@doe.com" }
-    },
-  }),
-]
+const storage = createStorage({
+  driver: memoryDriver(),
+})
 
-export const authOptions: NextAuthOptions = {
-  session: {
-    strategy: "jwt",
-  },
-
-  providers: providers,
-
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  session: { strategy: "jwt" },
+  basePath: "/api/auth",
+  adapter: UnstorageAdapter(storage),
+  debug: !!process.env.AUTH_DEBUG,
+  theme: { logo: "https://authjs.dev/img/logo-sm.png" },
+  providers: [
+    Google,
+    CredentialsProvider({
+      type: "credentials",
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      authorize: async (credentials: any) => {
+        console.log("credentials", credentials)
+        return { id: "1", name: "John Doe", ...credentials }
+      },
+    }),
+  ],
   callbacks: {
-    jwt: async ({ token, user }) => {
-      if (user) {
-        // const myUser = user as unknown
-
-        return {
-          ...token,
-          // firstName: myUser.firstName,
-          // lastName: myUser.lastName,
-          // id: myUser.id,
-          // randomKey: myUser.id,
-          // role: myUser.role,
-        }
+    authorized({ request, auth }) {
+      const { pathname } = request.nextUrl
+      if (pathname === "/middleware-example") return !!auth
+      return true
+    },
+    jwt({ token, trigger, session, account }) {
+      if (trigger === "update") token.name = session.user.name
+      if (account?.provider === "keycloak") {
+        return { ...token, accessToken: account.access_token }
       }
       return token
     },
-    async session({ session }) {
-      // const _token = token as unknown as JWT
+    async session({ session, token }) {
+      if (token?.accessToken) session.accessToken = token.accessToken
 
-      // const currentUser = await userService.detail(_token.id, { include: { role: true } })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const currentUser = {} as any
-
-      if (!currentUser) throw new Error("Unauthorized")
-
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          firstName: currentUser.firstName,
-          lastName: currentUser.lastName,
-          email: currentUser.email,
-          id: currentUser.id,
-          role: currentUser.role,
-        },
-        expires: session.expires,
-      }
+      return session
     },
   },
+  experimental: { enableWebAuthn: true },
+})
 
-  secret: process.env.NEXTAUTH_SECRET,
+declare module "next-auth" {
+  interface Session {
+    accessToken?: string
+  }
+}
 
-  debug: process.env.NODE_ENV === "development",
+declare module "next-auth/jwt" {
+  interface JWT {
+    accessToken?: string
+  }
 }
