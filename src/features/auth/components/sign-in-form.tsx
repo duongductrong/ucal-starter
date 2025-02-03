@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { Button } from "@/components/ui/button"
@@ -17,29 +18,40 @@ import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { FormProvider, useForm } from "react-hook-form"
 import { z } from "zod"
-import { signInWithCredentials } from "../actions/sign-in-with-oauth"
+import { signInWithCredentials } from "../actions/sign-in"
 import { SignInWithProviderButton } from "./buttons"
 
 export const signInSchema = z.object({
   email: z.string().email(),
+  password: z.string(),
 })
 
-export type SignInSchemaInferred = z.infer<typeof signInSchema>
+export type SignInSchema = z.infer<typeof signInSchema>
 
 export function SignInForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const searchParams = useSearchParams()
-  const methods = useForm<SignInSchemaInferred>({
+  const methods = useForm<SignInSchema>({
     defaultValues: {
       email: "",
+      password: "",
     },
     resolver: zodResolver(signInSchema),
   })
 
-  const handleSignInWithCredentials = methods.handleSubmit((data) => {
-    signInWithCredentials(data.email)
+  const handleSignInWithCredentials = methods.handleSubmit(async (data) => {
+    const result = await signInWithCredentials({
+      email: data.email,
+      password: "password",
+    })
+
+    Object.entries(result?.validationErrors ?? {}).forEach(([key, msg]) => {
+      methods.setError(key as any, {
+        message: (msg as any)._errors.join(", "),
+      })
+    })
   })
 
   return (
@@ -138,7 +150,7 @@ export function SignInForm({
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
                 <Link href="/sign-up" className="underline underline-offset-4">
-                  Enter your email
+                  Sign up
                 </Link>
               </div>
             </div>

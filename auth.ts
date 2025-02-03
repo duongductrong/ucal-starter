@@ -1,10 +1,9 @@
-import { USER_ALREADY_CONNECTED_ANOTHER_PROVIDER } from "@/db/queries/user/code"
 import { createUser } from "@/db/queries/user/create-user"
-import {
-  isUserAlreadyConnectedAnotherProvider,
-  isUserAlreadyExists,
-} from "@/db/queries/user/error"
+import { isUserAlreadyExists } from "@/db/queries/user/error"
+import { getUserByEmail } from "@/db/queries/user/get-user-by-email"
+import { comparePasswords } from "@/lib/password"
 import { UnstorageAdapter } from "@auth/unstorage-adapter"
+import { isNil } from "lodash"
 import NextAuth from "next-auth"
 import "next-auth/jwt"
 import CredentialsProvider from "next-auth/providers/credentials"
@@ -52,24 +51,41 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    signIn: async ({ user, account }) => {
-      try {
-        await createUser({
-          email: user?.email as string,
-          password: null,
-          name: user.name,
-          provider: account?.provider as string,
-          providerId: account?.providerAccountId as string,
-          avatar: user?.image as string,
-          emailVerified: new Date(),
-        })
-      } catch (error) {
-        if (isUserAlreadyExists(error)) return true
-        if (isUserAlreadyConnectedAnotherProvider(error))
-          return `/sign-in?code=${USER_ALREADY_CONNECTED_ANOTHER_PROVIDER}`
+    signIn: async ({ user, account, credentials }) => {
+      const hasCredentials = !isNil(credentials)
 
-        return false
+      if (!hasCredentials) {
+        try {
+          await createUser({
+            email: user?.email as string,
+            password: null,
+            name: user.name,
+            provider: account?.provider as string,
+            providerId: account?.providerAccountId as string,
+            avatar: user?.image as string,
+            emailVerified: new Date(),
+          })
+
+          return true
+        } catch (error) {
+          if (isUserAlreadyExists(error)) return true
+
+          return false
+        }
       }
+
+      const existingUser = await getUserByEmail({
+        email: credentials?.email as string,
+      })
+
+      if (!existingUser) return false
+
+      const isMatchedPasswords = comparePasswords(
+        credentials.password as string,
+        existingUser?.password as string
+      )
+
+      if (!isMatchedPasswords) return false
 
       return false
     },

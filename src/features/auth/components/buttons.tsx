@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from "@/components/ui/button"
 import { BuiltInProviderType } from "next-auth/providers"
-import { signInWithOAuth } from "../actions/sign-in-with-oauth"
+import { signInWithOAuth } from "../actions/sign-in"
 
 export interface SignInWithProviderButtonProps extends ButtonProps {
   provider: BuiltInProviderType

@@ -13,7 +13,7 @@ const LazyMultiSelect = dynamic(() => import("@/components/ui/multiselect"))
 
 const Field = createField(
   {
-    text: (props: InputProps) => <LazyInput {...props} type="text" />,
+    text: (props: InputProps) => <LazyInput type="text" {...props} />,
     multiselect: LazyMultiSelect,
   },
   {
