@@ -1,3 +1,4 @@
+import { USER_ALREADY_CONNECTED_ANOTHER_PROVIDER } from "@/db/queries/user/code"
 import { createUser } from "@/db/queries/user/create-user"
 import {
   isUserAlreadyConnectedAnotherProvider,
@@ -63,11 +64,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           emailVerified: new Date(),
         })
       } catch (error) {
-        console.error("[auth]", error)
-
         if (isUserAlreadyExists(error)) return true
         if (isUserAlreadyConnectedAnotherProvider(error))
-          return "/sign-in?message=already-connected-with-another-provider"
+          return `/sign-in?code=${USER_ALREADY_CONNECTED_ANOTHER_PROVIDER}`
 
         return false
       }

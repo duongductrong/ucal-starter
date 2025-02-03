@@ -8,10 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
 import Field from "@/components/uses/form"
+import { getErrorMessage } from "@/config/messages"
 import { cn } from "@/utils/tw"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { FormProvider, useForm } from "react-hook-form"
 import { z } from "zod"
 import { signInWithCredentials } from "../actions/sign-in-with-oauth"
@@ -19,7 +22,6 @@ import { SignInWithProviderButton } from "./buttons"
 
 export const signInSchema = z.object({
   email: z.string().email(),
-  // password: z.string().min(8),
 })
 
 export type SignInSchemaInferred = z.infer<typeof signInSchema>
@@ -28,10 +30,10 @@ export function SignInForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const searchParams = useSearchParams()
   const methods = useForm<SignInSchemaInferred>({
     defaultValues: {
       email: "",
-      // password: "",
     },
     resolver: zodResolver(signInSchema),
   })
@@ -101,8 +103,13 @@ export function SignInForm({
                     required
                     tabIndex={1}
                   />
+                  {searchParams.get("code") ? (
+                    <small className="text-destructive">
+                      {getErrorMessage(searchParams.get("code")!)}
+                    </small>
+                  ) : null}
                 </div>
-                {/* <div className="grid gap-2">
+                <div className="grid gap-2">
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
                     <Link
@@ -122,7 +129,7 @@ export function SignInForm({
                     tabIndex={2}
                     required
                   />
-                </div> */}
+                </div>
                 <Button type="submit" className="w-full">
                   Continue
                 </Button>
