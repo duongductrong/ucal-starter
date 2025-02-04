@@ -20,7 +20,7 @@ import { useSearchParams } from "next/navigation"
 import { ReactNode } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import { z } from "zod"
-import { SignInWithProviderButton } from "./buttons"
+import { SignInWithProviderButton } from "./auth-buttons"
 
 export const authFormSchema = z.object({
   email: z.string().email(),

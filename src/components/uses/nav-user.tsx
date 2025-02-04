@@ -26,6 +26,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { signOutWithAccount } from "@/features/auth/actions/sign-in"
+import { SignOutButton } from "@/features/auth/components/buttons"
 
 export function NavUser({
   user,
@@ -103,10 +104,12 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut}>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <SignOutButton asChild>
+              <DropdownMenuItem onClick={handleSignOut}>
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </SignOutButton>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
