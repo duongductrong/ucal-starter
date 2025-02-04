@@ -1,22 +1,22 @@
 "use client"
 
-import { urls } from "@/config/urls"
 import { webConfig } from "@/config/web"
 import { cn } from "@/utils/tw"
 import { GalleryVerticalEnd } from "lucide-react"
 import { useAction } from "next-safe-action/hooks"
 import { ComponentProps } from "react"
-import { signInWithCredentials } from "../actions/sign-in"
 import { AuthForm, AuthFormProps } from "../components/auth-form"
+import { urls } from "@/config/urls"
+import { signUpWithCredentials } from "../actions/sign-up"
 
 export interface SignInScreenProps extends ComponentProps<"div"> {}
 
 const SignInScreen = ({ className, ...props }: SignInScreenProps) => {
-  const signInWithCredentialsAct = useAction(signInWithCredentials)
+  const signUpWithCredentialsAct = useAction(signUpWithCredentials)
 
   const handleContinueWithCredentials: AuthFormProps["onContinueWithCredentials"] =
     (data) => {
-      return signInWithCredentialsAct.executeAsync({
+      return signUpWithCredentialsAct.executeAsync({
         email: data.email,
         password: data.password,
       })
@@ -38,13 +38,14 @@ const SignInScreen = ({ className, ...props }: SignInScreenProps) => {
           {webConfig.name}
         </a>
         <AuthForm
-          title="Sign in"
+          title="Sign up"
           subtitle="With your Github or Google account"
-          hintText="Don't have an account?"
-          hintAction="Sign up"
-          hintActionTo={urls.auth.signUp}
+          hintText="You're already have an account?"
+          hintAction="Sign in"
+          hintActionTo={urls.auth.signIn}
+          enableForgotPasswordButton={false}
           onContinueWithCredentials={handleContinueWithCredentials}
-          loading={signInWithCredentialsAct.status === "executing"}
+          loading={signUpWithCredentialsAct.status === "executing"}
         />
       </div>
     </div>

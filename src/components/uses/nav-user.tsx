@@ -25,8 +25,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { signOutWithAccount } from "@/features/auth/actions/sign-in-with-oauth"
-import {} from "next-auth/react"
+import { signOutWithAccount } from "@/features/auth/actions/sign-in"
 
 export function NavUser({
   user,

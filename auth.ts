@@ -80,14 +80,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       if (!existingUser) return false
 
-      const isMatchedPasswords = comparePasswords(
+      const isMatchedPasswords = await comparePasswords(
         credentials.password as string,
         existingUser?.password as string
       )
 
-      if (!isMatchedPasswords) return false
-
-      return false
+      return isMatchedPasswords
     },
 
     authorized() {

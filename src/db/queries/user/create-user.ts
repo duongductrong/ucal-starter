@@ -9,8 +9,11 @@ import {
   USER_ALREADY_EXISTS,
   USER_CANNOT_CREATE,
 } from "./code"
+import invariant from "tiny-invariant"
 
-export const createUser = async (userReq: UserInsertWithProvider) => {
+export const createUser = async (
+  userReq: Omit<UserInsertWithProvider, "role">
+) => {
   const existingUser = await db.query.users.findFirst({
     where: eq(users.email, userReq.email),
     with: {
@@ -18,12 +21,15 @@ export const createUser = async (userReq: UserInsertWithProvider) => {
     },
   })
 
+  invariant(!Object.hasOwn(userReq, "role"), "User request must have a role")
+
   // If there is no existing user, create a new user
   if (!existingUser) {
     const [newUser] = await db
       .insert(users)
       .values({
         ...userReq,
+        role: "customer",
         password: userReq?.password
           ? await hashPassword(userReq.password)
           : undefined,

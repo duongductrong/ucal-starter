@@ -1,9 +1,9 @@
 import SignInScreen from "@/features/auth/screens/sign-in"
 
-export interface LoginPageProps {}
+export interface SignInPageProps {}
 
-const LoginPage = () => {
+const SignInPage = () => {
   return <SignInScreen />
 }
 
-export default LoginPage
+export default SignInPage

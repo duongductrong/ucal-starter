@@ -7,12 +7,24 @@ export interface GetUserByEmailVariables {
   email: string
 }
 
-export const getUserByEmail = ({ email }: GetUserByEmailVariables) => {
-  console.log({ email })
-
+export const getUserByEmail = async ({ email }: GetUserByEmailVariables) => {
   invariant(email, "Email must be provided")
 
   return db.query.users.findFirst({
     where: eq(users.email, email),
+    columns: {
+      avatar: true,
+      createdAt: true,
+      email: true,
+      emailVerified: true,
+      id: true,
+      name: true,
+      role: true,
+      updatedAt: true,
+      password: true,
+    },
+    with: {
+      providers: true,
+    },
   })
 }
