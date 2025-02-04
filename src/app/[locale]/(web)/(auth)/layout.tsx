@@ -1,8 +1,17 @@
 "use client"
 
-import { AuthPossible } from "@/features/auth/components/auth"
+import { redirect } from "@/i18n/routing"
+import { getRedirectAuthPath } from "@/utils/auth"
+import { useSession } from "next-auth/react"
+import { useLocale } from "next-intl"
 import { ReactNode } from "react"
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
-  return <AuthPossible>{children}</AuthPossible>
+  const session = useSession()
+  const locale = useLocale()
+
+  if (session.status === "authenticated")
+    return redirect({ locale, href: getRedirectAuthPath(session.data.user) })
+
+  return children
 }

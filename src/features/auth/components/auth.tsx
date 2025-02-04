@@ -1,27 +1,25 @@
+"use client"
+
+import { urls } from "@/config/urls"
 import { redirect } from "@/i18n/routing"
-import { getRedirectAuthPath } from "@/utils/auth"
 import { useSession } from "next-auth/react"
+import { useLocale } from "next-intl"
 import { PropsWithChildren } from "react"
 
-export const AuthPossible = ({ children }: PropsWithChildren) => {
-  const session = useSession()
+export const abilities = {
+  admin: {},
+  customer: {},
+}
 
-  if (session.status === "authenticated") {
-    return redirect({
-      href: getRedirectAuthPath(session.data.user),
-      locale: "en",
-    })
+export const AuthTrusted = ({ children }: PropsWithChildren) => {
+  const session = useSession()
+  const locale = useLocale()
+
+  if (session.status === "loading") return "Verifying"
+
+  if (session.status !== "authenticated") {
+    return redirect({ href: urls.auth.signIn, locale: locale })
   }
 
   return children
-}
-
-export const AuthSignedIn = ({ children }: PropsWithChildren) => {
-  const session = useSession()
-
-  if (session.status === "authenticated") {
-    return children
-  }
-
-  return redirect({ href: "/sign-in", locale: "en" })
 }
