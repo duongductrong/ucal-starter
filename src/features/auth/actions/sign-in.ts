@@ -1,8 +1,9 @@
 "use server"
 
-import { urls } from "@/config/urls"
+import { getUserByEmail } from "@/db/queries/user/get-user-by-email"
 import { redirect } from "@/i18n/routing"
 import { safeAction } from "@/lib/safe-action"
+import { getRedirectAuthPath } from "@/utils/auth"
 import { signIn, signOut } from "auth"
 import { returnValidationErrors } from "next-safe-action"
 import { z } from "zod"
@@ -37,7 +38,11 @@ export const signInWithCredentials = safeAction
       }
     )
 
-    return result === "ok" ? redirect({ href: urls.home, locale: "en" }) : null
+    const user = await getUserByEmail({ email: email })
+
+    return result === "ok"
+      ? redirect({ href: getRedirectAuthPath(user!), locale: "en" })
+      : null
   })
 
 export const signOutWithAccount = safeAction.action(async () => {

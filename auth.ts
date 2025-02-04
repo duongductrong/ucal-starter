@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 import { createUser } from "@/db/queries/user/create-user"
 import { isUserAlreadyExists } from "@/db/queries/user/error"
 import { getUserByEmail } from "@/db/queries/user/get-user-by-email"
+import { User, UserRole } from "@/db/schema"
 import { comparePasswords } from "@/lib/password"
 import { UnstorageAdapter } from "@auth/unstorage-adapter"
 import { isNil } from "lodash"
@@ -101,11 +104,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         result.accessToken = account.access_token
       }
 
+      result.role = token.role
+
       return result
     },
 
     async session({ session, token }) {
+      const user = (await getUserByEmail({ email: token.email! }))!
+
       if (token?.accessToken) session.accessToken = token.accessToken
+
+      session.user = {
+        avatar: user?.avatar,
+        createdAt: user?.createdAt,
+        email: user?.email,
+        emailVerified: user.emailVerified,
+        name: user.name,
+        role: user.role,
+        updatedAt: user.updatedAt,
+        image: user.email,
+        // @ts-ignore
+        id: user.id,
+      }
 
       return session
     },
@@ -116,11 +136,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 declare module "next-auth" {
   interface Session {
     accessToken?: string
+    user: Omit<User, "password">
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     accessToken?: string
+    role: UserRole
   }
 }

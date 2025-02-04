@@ -12,7 +12,7 @@ const SessionProvider = ({
   children: React.ReactNode
 }) => {
   const sessionId = useMemo(
-    () => session?.user?.id ?? new Date().getTime(),
+    () => session?.user.id ?? new Date().getTime(),
     [session]
   )
   return (
