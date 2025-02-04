@@ -26,7 +26,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { signOutWithAccount } from "@/features/auth/actions/sign-in"
-import { SignOutButton } from "@/features/auth/components/buttons"
+import { SignOutButton } from "@/features/auth/components/auth-buttons"
 
 export function NavUser({
   user,
