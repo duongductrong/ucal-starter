@@ -2,6 +2,16 @@
 
 ![Next Starter Repository](./thumbnail.png)
 
+## 🏃 Getting started
+
+```
+npx degit https://github.com/duongductrong/next-starter custom-next-starter
+
+cd custom-next-starter && git init
+
+pnpm install && pnpm dev
+```
+
 ## 🚀 What's included?
 
 - 👤 Authentication: A robust authentication system using NextAuth.js, supporting multiple providers and JWT-based sessions.
@@ -12,7 +22,7 @@
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## 📝 Usage
 
 First, run the development server:
 
