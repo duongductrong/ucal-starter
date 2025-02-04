@@ -11,10 +11,12 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import Field from "@/components/uses/form"
+import { Loading } from "@/components/uses/loading"
 import { getErrorMessage } from "@/config/messages"
+import { Link } from "@/i18n/routing"
 import { cn } from "@/utils/tw"
 import { zodResolver } from "@hookform/resolvers/zod"
-import Link from "next/link"
+import { useAction } from "next-safe-action/hooks"
 import { useSearchParams } from "next/navigation"
 import { FormProvider, useForm } from "react-hook-form"
 import { z } from "zod"
@@ -41,8 +43,10 @@ export function SignInForm({
     resolver: zodResolver(signInSchema),
   })
 
+  const signInWithCredentialsAct = useAction(signInWithCredentials)
+
   const handleSignInWithCredentials = methods.handleSubmit(async (data) => {
-    const result = await signInWithCredentials({
+    const result = await signInWithCredentialsAct.executeAsync({
       email: data.email,
       password: "password",
     })
@@ -54,6 +58,8 @@ export function SignInForm({
     })
   })
 
+  const isLoading = signInWithCredentialsAct.status === "executing"
+
   return (
     <FormProvider {...methods}>
       <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -61,7 +67,7 @@ export function SignInForm({
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Welcome </CardTitle>
             <CardDescription>
-              Login with your Github or Google account
+              Sign in with your Github or Google account
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -142,8 +148,8 @@ export function SignInForm({
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full">
-                  Continue
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Loading is={isLoading}>Continue</Loading>
                 </Button>
               </form>
 
@@ -158,7 +164,8 @@ export function SignInForm({
         </Card>
         <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
           By clicking continue, you agree to our{" "}
-          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+          <Link href="#">Terms of Service</Link> and{" "}
+          <Link href="#">Privacy Policy</Link>.
         </div>
       </div>
     </FormProvider>
