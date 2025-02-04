@@ -1,3 +1,15 @@
+# 📦 Next Starter
+
+![Next Starter Repository](./thumbnail.png)
+
+## 🚀 What's included?
+
+- 👤 Authentication: A robust authentication system using NextAuth.js, supporting multiple providers and JWT-based sessions.
+- 🖼️ Drizzle ORM: A flexible and type-safe ORM for interacting with your database.
+- 🛠️ Utility Functions: Helper functions for event handling and password comparison.
+- 🔗 Routing: Internationalized routing with support for multiple locales using Next.js.
+- 🌐 Vercel Deployment: Easy deployment setup with Vercel, including links to deploy and learn more about Next.js.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
