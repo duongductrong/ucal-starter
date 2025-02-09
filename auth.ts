@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { createUser } from "@/db/queries/user/create-user"
-import { isUserAlreadyExists } from "@/db/queries/user/error"
-import { getUserByEmail } from "@/db/queries/user/get-user-by-email"
 import { User, UserRole } from "@/db/schema"
+import { isUserAlreadyExists } from "@/db/user/error"
+import { createUser } from "@/db/user/queries/create-user"
+import { getUserByEmail } from "@/db/user/queries/get-user-by-email"
 import { comparePasswords } from "@/lib/password"
 import { UnstorageAdapter } from "@auth/unstorage-adapter"
 import { isNil } from "lodash"

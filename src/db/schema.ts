@@ -3,19 +3,18 @@ import {
   ProviderInsert,
   ProviderInsertWithUser,
   providers,
-  providersRelations,
-} from "./providers"
+} from "./user/schema/provider"
+import { providersRelations, usersRelations } from "./user/schema/relations"
 import {
+  rolesEnum,
   User,
   UserInsert,
   UserInsertWithProvider,
   UserRole,
   users,
-  usersRelations,
-  rolesEnum,
-} from "./users"
+} from "./user/schema/user"
 
-export { providers, providersRelations, users, usersRelations, rolesEnum }
+export { providers, providersRelations, rolesEnum, users, usersRelations }
 export type {
   Provider,
   ProviderInsert,

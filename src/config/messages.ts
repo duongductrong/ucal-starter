@@ -1,4 +1,4 @@
-import { USER_ALREADY_CONNECTED_ANOTHER_PROVIDER } from "@/db/queries/user/code"
+import { USER_ALREADY_CONNECTED_ANOTHER_PROVIDER } from "@/db/user/code"
 
 export const getErrorMessage = (code: string) => {
   switch (code) {

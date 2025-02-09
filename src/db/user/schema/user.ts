@@ -1,4 +1,3 @@
-import { relations } from "drizzle-orm"
 import {
   integer,
   pgEnum,
@@ -7,8 +6,7 @@ import {
   uniqueIndex,
   varchar,
 } from "drizzle-orm/pg-core"
-import { Provider, providers } from "./providers"
-
+import { Provider } from "../../schema"
 export const rolesEnum = pgEnum("role", ["customer", "admin"])
 
 export const users = pgTable(
@@ -28,10 +26,6 @@ export const users = pgTable(
   },
   (table) => [uniqueIndex("email_idx").on(table.email)]
 )
-
-export const usersRelations = relations(users, ({ many }) => ({
-  providers: many(providers),
-}))
 
 export type User = typeof users.$inferSelect
 export type UserInsert = typeof users.$inferInsert

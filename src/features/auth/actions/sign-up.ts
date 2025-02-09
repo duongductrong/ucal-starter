@@ -2,8 +2,8 @@
 "use server"
 
 import { urls } from "@/config/urls"
-import { createUser } from "@/db/queries/user/create-user"
-import { getUserByEmail } from "@/db/queries/user/get-user-by-email"
+import { createUser } from "@/db/user/queries/create-user"
+import { getUserByEmail } from "@/db/user/queries/get-user-by-email"
 import { redirect } from "@/i18n/routing"
 import { safeAction } from "@/lib/safe-action"
 import { returnValidationErrors } from "next-safe-action"

@@ -1,6 +1,6 @@
 "use server"
 
-import { getUserByEmail } from "@/db/queries/user/get-user-by-email"
+import { getUserByEmail } from "@/db/user/queries/get-user-by-email"
 import { redirect } from "@/i18n/routing"
 import { safeAction } from "@/lib/safe-action"
 import { getRedirectAuthPath } from "@/utils/auth"

@@ -1,15 +1,15 @@
 import { db } from "@/db"
 import { users } from "@/db/schema"
-import { UserInsertWithProvider } from "@/db/schema/users"
+import { UserInsertWithProvider } from "@/db/user/schema/user"
 import { hashPassword } from "@/lib/password"
 import { eq } from "drizzle-orm"
-import { connectProvider } from "../provider/connect-provider"
+import invariant from "tiny-invariant"
+import { connectProvider } from "./connect-provider"
 import {
   USER_ALREADY_CONNECTED_ANOTHER_PROVIDER,
   USER_ALREADY_EXISTS,
   USER_CANNOT_CREATE,
-} from "./code"
-import invariant from "tiny-invariant"
+} from "../code"
 
 export const createUser = async (
   userReq: Omit<UserInsertWithProvider, "role">
